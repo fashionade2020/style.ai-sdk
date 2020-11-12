@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <link rel="stylesheet" type="text/css" href="../css/fashionade.css" />
+    <script src="../js/fashionade.js"></script>
+    <script>
+        FASHIONADE.init({
+            appKey: 'fa_9sdf9d8f982394hds9fhs9h929a',
+            productId: '28965'
+        }, {
+            // 로그 전송시 ext에 포함, 자유포맷
+            userId: '쇼핑몰 userId',
+            age: '10-20',
+        });
+    </script>
+</head>
+<body>
+<h2>렌더 타입</h2>
+<div
+    data-fashionade-render="recommend"
+    data-fashionade-render-recommend-type="render"
+></div>
+
+<hr />
+<h2>오버레이 타입</h2>
+<div
+    data-fashionade-render="recommend"
+    data-fashionade-render-recommend-type="overlay"
+></div>
+
+<button
+    data-fashionade-open-layer="recommend"
+    class="fashionade--btn-overlay"
+>추천상품 오버레이(오버레이일 경우)</button>
+
+<script>
+    FASHIONADE.render();
+</script>
+</body>
+</html>
