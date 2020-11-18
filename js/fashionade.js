@@ -54,7 +54,7 @@ var FASHIONADE = (function ($w) {
         )
     };
     var strItems = function (items) {
-        for (var innerHTML = '', i = 0, l = 3; i < l; ++i) {
+        for (var innerHTML = '', i = 0, l = Math.min(items.length, 3); i < l; ++i) {
             innerHTML +=
             '<li class="fashionade--item"> \
                 <div class="fashionade--thumb" style="background-image:url(\'' + items[i].imageUrl + '\')"><a href="' + items[i].detailUrl + '" target="FROM_FASHIONADE_SDK" onclick="FASHIONADE.LOGS(\'click\', \'THUMBNAIL' + (i + 1) + '\')">' + items[i].name + '</a></div> \
@@ -162,7 +162,7 @@ var FASHIONADE = (function ($w) {
     var genLogData = function(type, eventPosition) {
         return {
             type: type,
-            appKey: config.apiParams.appKey,
+            apiKey: config.apiParams.apiKey,
             uuid: getMadUuid(),
             userAgent: navigator.userAgent,
             lang: navigator.language,
@@ -189,10 +189,12 @@ var FASHIONADE = (function ($w) {
     var render = function() {
         get(config.apiUrl + utils.jsonToParams(config.apiParams), function (d) {
             FASHIONADE.LOGS('init');
+            var showContents = (d.length === 1 && d[0].items.length === 0) ? false : true;
 
-            if (d.length > 0) {
+            if (d.length > 0 && showContents) {
                 if ($('[data-fashionade-render-recommend-type="overlay"]') && $('[data-fashionade-open-layer="recommend"]')) {
-                    $('[data-fashionade-open-layer="recommend"]').onclick = function () {
+                    $('[data-fashionade-open-layer="recommend"]').onclick = function (ev) {
+                        ev.stopPropagation();
                         $('[data-fashionade-render-recommend-type="overlay"]').innerHTML =
                             '<div class="fashionade--layerWrap"><div class="fashionade--layerInnerWrap">' +
                             strTitle(d, 'overlay') +
@@ -262,7 +264,8 @@ var FASHIONADE = (function ($w) {
 
     var init = function(_config, _ext) {
         config.apiUrl = _config.apiUrl || 'https://www.fashionade.ai/api/v1/recommend-products';
-        config.apiParams.appKey = _config.appKey;   //'fa_9sdf9d8f982394hds9fhs9h929a'
+        config.apiParams.apiKey = _config.apiKey;   //'fa_9sdf9d8f982394hds9fhs9h929a'
+        config.apiParams.productId = _config.productId;
         config.logExt = _ext;
     };
 
