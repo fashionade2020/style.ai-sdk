@@ -13,10 +13,17 @@
     <link rel="stylesheet" type="text/css" href="../css/fashionade.css" />
     <script src="../js/fashionade.js"></script>
     <script>
+        // FASHIONADE.init({
+        //     apiKey: '085ce7c09bac47f6ad79a5e815b94bbef7c8532b61724f11ab68bb44f5d6084c',
+        //     apiUrl: 'https://www.fashionade.ai/api/v2/recommend-products'
+        // }, {
+        //     // 로그 전송시 ext에 포함, 자유포맷
+        //     userId: '쇼핑몰 userId',
+        //     age: '10-20',
+        // });
         FASHIONADE.init({
-            apiKey: '085ce7c09bac47f6ad79a5e815b94bbef7c8532b61724f11ab68bb44f5d6084c',
-            apiUrl: 'https://www.fashionade.ai/api/v2/recommend-products',
-            productId: '1000000103'
+            appKey: 'cahiers_test_9sdf9d8f982394hds9fhs9h923a',
+            apiUrl: 'https://www.fashionade.ai/api/v1/recommend-products'
         }, {
             // 로그 전송시 ext에 포함, 자유포맷
             userId: '쇼핑몰 userId',
@@ -25,6 +32,7 @@
     </script>
 </head>
 <body>
+
 <h2>렌더 타입</h2>
 <div
     data-fashionade-render="recommend"
@@ -43,8 +51,46 @@
     class="fashionade--btn-overlay"
 >추천상품 오버레이(오버레이일 경우)</button>
 
+
+<script type="text/html" id="sampleTemplate">
+    <div id="a" class="fashionade--renderWrap">
+        <ul class="fashionade--recommendTitleList" style="margin:0;padding:0">
+            <%
+            for ( var i = 0; i < data.length; i++ ) {
+            %>
+                <li onClick="FASHIONADE.RECOMMEND_POSITION(<%= i %>)" style="float:left;margin:2em 8em 2em 0;list-style:none;cursor:pointer"><%= data[i].name %></li>
+            <%
+            }
+            %>
+        </ul>
+
+        <div style="clear:left;overflow:hidden;width:600px;height:200px;">
+            <ul class="fashionade--recommendContentList" style="margin:0;padding:0">
+                <%
+                for ( var i = 0; i < data.length; i++ ) {
+                %>
+                <li style="float:left;list-style:none;">
+                    <% for ( var j = 0; j < data[i]['items'].length; j++ ) { %><a href="<%= data[i]['items'][j]['detailUrl'] %>" target="FROM_FASHIONADE_SDK"><img src="<%= data[i]['items'][j]['imageUrl'] %>" width="200" height="200" style="padding:0;"></a><% } %>
+                </li>
+                <%
+                }
+                %>
+            </ul>
+        </div>
+
+        <div style="clear:left;margin-top:2em">
+            <button class="fashionade--btn fashionade--prev" onclick="FASHIONADE.RECOMMEND_DIRECT(-1);FASHIONADE.LOGS(&quot;click&quot;, &quot;PREV&quot;);console.log(FASHIONADE.RECOMMEND_INDEX())">이전 추천보기</button>
+            <button class="fashionade--btn fashionade--next" onclick="FASHIONADE.RECOMMEND_DIRECT(1);FASHIONADE.LOGS(&quot;click&quot;, &quot;NEXT&quot;);console.log(FASHIONADE.RECOMMEND_INDEX())">다음 추천보기</button>
+        </div>
+    </div>
+</script>
+<div id="sampleTemplateWrap"></div>
 <script>
-    FASHIONADE.render();
+    FASHIONADE.render({
+        productId : 1843,
+        // templateId : 'sampleTemplate',
+        // templateWrapId : 'sampleTemplateWrap',
+    });
 </script>
 </body>
 </html>
