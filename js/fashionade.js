@@ -162,7 +162,6 @@ var FASHIONADE = (function ($w) {
         return {
             type: type,
             apiKey: config.apiParams.apiKey,
-            appKey: config.apiParams.appKey,
             uuid: getMadUuid(),
             userAgent: navigator.userAgent,
             lang: navigator.language,
@@ -287,7 +286,6 @@ var FASHIONADE = (function ($w) {
     var init = function(_config, _ext) {
         config.apiUrl = _config.apiUrl || 'https://www.fashionade.ai/api/v2/recommend-products';
         config.apiParams.apiKey = _config.apiKey;   //'fa_9sdf9d8f982394hds9fhs9h929a'
-        config.apiParams.appKey = _config.appKey;
         config.apiParams.productId = _config.productId;
         config.logExt = _ext;
     };
