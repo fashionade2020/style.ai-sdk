@@ -53,15 +53,16 @@ var FASHIONADE = (function ($w) {
                 </div>'
         )
     };
+    var isFashionadePage = location.host.indexOf('fashionade.ai') > -1;
     var strItems = function (items) {
         for (var innerHTML = '', i = 0, l = Math.min(items.length, 3); i < l; ++i) {
             innerHTML +=
             '<li class="fashionade--item"> \
-                <div class="fashionade--thumb" style="background-image:url(\'' + items[i].imageUrl + '\')"><a href="' + items[i].detailUrl + '" target="FROM_FASHIONADE_SDK" onclick="FASHIONADE.LOGS(\'click\', \'THUMBNAIL' + (i + 1) + '\')">' + items[i].name + '</a></div> \
+                <div class="fashionade--thumb" style="background-image:url(\'' + items[i].imageUrl + '\')"><a href="' + (isFashionadePage ? 'https://www.fashionade.ai/item/' + items[i].id : items[i].detailUrl) + '" target="FROM_FASHIONADE_SDK" onclick="FASHIONADE.LOGS(\'click\', \'THUMBNAIL' + (i + 1) + '\')">' + items[i].name + '</a></div> \
                 <div class="fashionade--content"> \
                   <dl> \
-                    <dt class="fashionade--brand"><a href="' + items[i].detailUrl + '" target="FROM_FASHIONADE_SDK" onclick="FASHIONADE.LOGS(\'click\', \'BRAND' + (i + 1) + '\')">' + items[i].brand + '</a></dt> \
-                    <dd class="fashionade--name"><a href="' + items[i].detailUrl + '" target="FROM_FASHIONADE_SDK" onclick="FASHIONADE.LOGS(\'click\', \'NAME' + (i + 1) + '\')">' + items[i].name + '</a></dd> \
+                    <dt class="fashionade--brand"><a href="' + (isFashionadePage ? 'https://www.fashionade.ai/item/' + items[i].id : items[i].detailUrl) + '" target="FROM_FASHIONADE_SDK" onclick="FASHIONADE.LOGS(\'click\', \'BRAND' + (i + 1) + '\')">' + items[i].brand + '</a></dt> \
+                    <dd class="fashionade--name"><a href="' + (isFashionadePage ? 'https://www.fashionade.ai/item/' + items[i].id : items[i].detailUrl) + '" target="FROM_FASHIONADE_SDK" onclick="FASHIONADE.LOGS(\'click\', \'NAME' + (i + 1) + '\')">' + items[i].name + '</a></dd> \
                   </dl> \
                 </div> \
           </li>'
