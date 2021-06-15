@@ -117,7 +117,7 @@ HTML `body`내에 상품 추천을 노출하고 싶은 부분에 다음과 같�
       apiUrl: '{호출할 API URL}',
       apiKey: '{사이트별로 발급된 API Key}',
       productId: '{현재 상품 ID}',
-      brand: true, // brand명 표시 여부 (기본값 false)
+      displayBrandName: true, // brand명 표시 여부 (기본값 false)
       externalLogData: {
         // 로그에 기록하고 싶은 추가 데이터 (자유형식)
         age: '10-20',
@@ -135,7 +135,7 @@ Single Page App 등의 환경에서 화면의 새로고침 없이 상품번호�
 ```js
 STYLEAI.render({ 
   productId: '{현재 상품 ID}',
-  brand: true, // optional, init시의 설정을 덮어쓴다. 
+  displayBrandName: true, // optional, init시의 설정을 덮어쓴다. 
 })
 ```
 
