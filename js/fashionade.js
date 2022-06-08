@@ -329,7 +329,7 @@ var FASHIONADE = (function ($w) {
     config.logExt = _ext
     
     tmpInterval = setInterval(function() {
-      if(document.querySelectorAll(".product-desc-value")[2])) {
+      if(document.querySelectorAll(".product-desc-value")[2]) {
           console.log(document.querySelectorAll("body"));
           clearInterval(tmpInterval);
       }
