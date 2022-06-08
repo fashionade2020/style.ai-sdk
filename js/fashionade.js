@@ -327,6 +327,10 @@ var FASHIONADE = (function ($w) {
     config.apiParams.apiKey = _config.apiKey //'fa_9sdf9d8f982394hds9fhs9h929a'
     config.apiParams.productId = _config.productId
     config.logExt = _ext
+    
+      document.addEventListener('DOMContentLoaded', function () {
+console.log(        document.querySelectorAll(".product-desc-value")[2])
+      })
   }
 
   return {
