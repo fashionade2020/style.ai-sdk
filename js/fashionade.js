@@ -419,7 +419,7 @@ var FASHIONADE = (function ($w) {
                     el.id = "fashionade-virtual-fitting";
                     document.body.appendChild(el);
                 }
-                if($("#fashionade-virtual-fitting").innerHTML = "") {
+                if($("#fashionade-virtual-fitting").innerHTML === "") {
                     el.innerHTML = html;
                 }
                 if($("#btn-fashionade-virtual-fitting") === null) {
