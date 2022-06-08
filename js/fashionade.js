@@ -408,27 +408,24 @@ var FASHIONADE = (function ($w) {
         slides = document.querySelectorAll('#fashionade-virtual-fitting .slide');
         arrayOfSlides = Array.prototype.slice.call(slides);
 
-        // reset markup
-        if($("#fashionade-virtual-fitting") !== null) {
-            $("#fashionade-virtual-fitting").innerHTML = "";
-        }
-
         productId = $$(".product-desc-value")[2].innerText;
         // productId = "1912232960"; //temp value
         get(tmpConfig.proxy + tmpConfig.APIs.models + '?apiKey=' + tmpConfig.apiKey + '&productId=' + productId, function (d) {
             if(d.length > 0) {
 
                 // add markup and button
-                var el = document.createElement("div");
-                el.id = "fashionade-virtual-fitting";
-                el.innerHTML = html;
-                document.body.appendChild(el);
+                if($("#fashionade-virtual-fitting") !== null) {
+                    var el = document.createElement("div");
+                    el.id = "fashionade-virtual-fitting";
+                    el.innerHTML = html;
+                    document.body.appendChild(el);
+                }
 
                 if($("#btn-fashionade-virtual-fitting") === null) {
                     var el = document.createElement("button");
                     el.id = "btn-fashionade-virtual-fitting";
                     el.onclick = function() {
-                        $("#fashionade-virtual-fitting").style.visibility = "visible";
+                        FASHIONADE.tmpInit();
                     };
                     $(".item-detail-img-container").appendChild(el);
                 }
@@ -645,7 +642,7 @@ var FASHIONADE = (function ($w) {
         }
         // reset default model
         fittedModels[choosedFiitedModelIndex].fittedImageUrl = "";
-        $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = fittedModels[choosedFiitedModelIndex].imageUrl;
+        $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[choosedFiitedModelIndex].imageUrl + '")';
 
         $("#addFittedItem").innerHTML = "";
         $("#addFittedItem").style.width = "0";
@@ -678,12 +675,12 @@ var FASHIONADE = (function ($w) {
             }
         },
         init: init,
-
+        tmpInit: tmpInit,
         openFashionadeVirtualFitting : function() {
             $("#fashionade-virtual-fitting").style.visibility = "visible";
         },
         closeFashionadeVirtualFitting : function() {
-            $("#fashionade-virtual-fitting").style.visibility = "hidden";
+            $("#fashionade-virtual-fitting").innerHTML = "";
         },
         prevModel : function() {
             movePrev();
