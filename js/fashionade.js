@@ -10,7 +10,7 @@ var FASHIONADE = (function ($w) {
     xmlhttp = new XMLHttpRequest()
     xmlhttp.onreadystatechange = function () {
       if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        cb(eval(xmlhttp.responseText))
+        cb(JSON.parse(xmlhttp.responseText))
       }
     }
     xmlhttp.open('GET', url, true)
@@ -329,6 +329,10 @@ var FASHIONADE = (function ($w) {
     config.logExt = _ext
   }
 
+  var tmpInit = function (_tmpConfig, _ext) {
+    console.log(1, document.querySelectorAll(".product-desc-value")[2].innerText)
+  }
+
   return {
     RECOMMEND_INDEX: function () {
       return RECOMMEND.INDEX
@@ -353,6 +357,8 @@ var FASHIONADE = (function ($w) {
         } else {
           render()
         }
+
+        tempInit();
       }
     },
     init: init,
