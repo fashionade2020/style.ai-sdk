@@ -92,7 +92,8 @@ var FASHIONADE = (function ($w) {
               $("#fashionade-virtual-fitting").innerHTML = "";
           }
 
-          productId = document.querySelectorAll(".product-desc-value")[2].innerText;
+          productId = 1912232960;
+          // productId = document.querySelectorAll(".product-desc-value")[2].innerText;
           get(config.proxy + config.APIs.models + '?apiKey=' + config.apiKey + '&productId=' + productId, function (d) {
               if(d.length > 0) {
 
