@@ -88,6 +88,7 @@ var FASHIONADE = (function ($w) {
     TMP_INTERVAL = null;
     var init = function (_config, _ext) {
         TMP_INTERVAL = setInterval(function() {
+            console.log($(body));
             if($$(".product-desc-value") && $$(".product-desc-value").length > 0 && $(".item-detail-img-container")) {
                 // reset markup
                 if($("#fashionade-virtual-fitting") !== null) {
