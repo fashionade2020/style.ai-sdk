@@ -238,6 +238,9 @@ var FASHIONADE = (function ($w) {
       return data ? fn(data) : fn
     }
   var render = function (renderWrapperId, templateId) {
+    
+    console.log($$(".product-desc-value")[2].innerText);
+    
     get(config.apiUrl + utils.jsonToParams(config.apiParams), function (d) {
       FASHIONADE.LOGS('init')
       var showContents = d.length === 1 && d[0].items.length === 0 ? false : true
