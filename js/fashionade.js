@@ -414,13 +414,14 @@ var FASHIONADE = (function ($w) {
             if(d.length > 0) {
 
                 // add markup and button
-                if($("#fashionade-virtual-fitting") !== null) {
+                if($("#fashionade-virtual-fitting") === null) {
                     var el = document.createElement("div");
                     el.id = "fashionade-virtual-fitting";
-                    el.innerHTML = html;
                     document.body.appendChild(el);
                 }
-
+                if($("#fashionade-virtual-fitting").innerHTML = "") {
+                    el.innerHTML = html;
+                }
                 if($("#btn-fashionade-virtual-fitting") === null) {
                     var el = document.createElement("button");
                     el.id = "btn-fashionade-virtual-fitting";
