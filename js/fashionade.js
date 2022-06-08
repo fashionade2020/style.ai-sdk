@@ -88,8 +88,8 @@ var FASHIONADE = (function ($w) {
     TMP_INTERVAL = null;
     var init = function (_config, _ext) {
         TMP_INTERVAL = setInterval(function() {
-            console.log($(body));
             if($$(".product-desc-value") && $$(".product-desc-value").length > 0 && $(".item-detail-img-container")) {
+                
                 // reset markup
                 if($("#fashionade-virtual-fitting") !== null) {
                     $("#fashionade-virtual-fitting").innerHTML = "";
@@ -97,82 +97,82 @@ var FASHIONADE = (function ($w) {
 
                 productId = $$(".product-desc-value")[2].innerText;
                 // productId = "1912232960"; //temp value
-                get(config.proxy + config.APIs.models + '?apiKey=' + config.apiKey + '&productId=' + productId, function (d) {
-                    if(d.length > 0) {
-
-                        // add markup and button
-                        var el = document.createElement("div");
-                        el.id = "fashionade-virtual-fitting";
-                        el.innerHTML = html;
-                        document.body.appendChild(el);
-
-                        if($("#btn-fashionade-virtual-fitting") === null) {
-                            var el = document.createElement("button");
-                            el.id = "btn-fashionade-virtual-fitting";
-                            el.onclick = function() {
-                                $("#fashionade-virtual-fitting").style.display = "block";
-                            };
-                            $(".item-detail-img-container").appendChild(el);
-                        }
-
-                        // add models
-                        fittedModels = d;
-                        $("#modelContent").innerHTML = "";
-                        fittedModels.map(function(model) {
-                            var el = document.createElement("div");
-                            el.className = "slide";
-                            el.style = "background-image:url(" + model.imageUrl + ")";
-                            $("#modelContent").appendChild(el);
-                        });
-                        $("#virtual-model-size").innerHTML = fittedModels[choosedFiitedModelIndex].size || "-";
-                        $("#virtual-model-tall").innerHTML = fittedModels[choosedFiitedModelIndex].tall || "-";
-
-                        // set carousel
-                        carousel = document.querySelector('#fashionade-virtual-fitting .models');
-                        carouselContent = document.querySelector('#fashionade-virtual-fitting .models-content');
-                        slides = document.querySelectorAll('#fashionade-virtual-fitting .slide');
-                        arrayOfSlides = Array.prototype.slice.call(slides);
-                        getCarouselSize();
-                        moveSlidesRight();
-
-                        // fitted default item
-                        $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
-
-                        // get items(get all categories for matching productId)
-                        get(config.proxy + config.APIs.items + '&apiKey=' + config.apiKey + '&productId=' + productId + '&category=TOP', function (d) {
-                            d.map(function(item) {
-                                chooseItems.TOPS.push(item);
-                                if(productId === item.productId) {
-                                    fittedItems.TOPS = item.itemId;
-                                }
-                            });
-
-                            // show choose items
-                            if(fittedItems.TOPS !== null) {
-                                showItems("BOTTOM");
-                            } else {
-                                showItems("TOP");
-                            }
-                        });
-                        get(config.proxy + config.APIs.items + '&apiKey=' + config.apiKey + '&productId=' + productId + '&category=BOTTOM', function (d) {
-                            d.map(function(item) {
-                                chooseItems.BOTTOMS.push(item);
-                                if(productId === item.productId) {
-                                    fittedItems.BOTTOMS = item.itemId;
-                                }
-                            });
-
-                            // show choose items
-                            if(fittedItems.TOPS !== null) {
-                                showItems("BOTTOM");
-                            } else {
-                                showItems("TOP");
-                            }
-
-                            // console.log(fittedItems, chooseItems);
-                        });
-                    }
-                });
+                // get(config.proxy + config.APIs.models + '?apiKey=' + config.apiKey + '&productId=' + productId, function (d) {
+                //     if(d.length > 0) {
+                //
+                //         // add markup and button
+                //         var el = document.createElement("div");
+                //         el.id = "fashionade-virtual-fitting";
+                //         el.innerHTML = html;
+                //         document.body.appendChild(el);
+                //
+                //         if($("#btn-fashionade-virtual-fitting") === null) {
+                //             var el = document.createElement("button");
+                //             el.id = "btn-fashionade-virtual-fitting";
+                //             el.onclick = function() {
+                //                 $("#fashionade-virtual-fitting").style.display = "block";
+                //             };
+                //             $(".item-detail-img-container").appendChild(el);
+                //         }
+                //
+                //         // add models
+                //         fittedModels = d;
+                //         $("#modelContent").innerHTML = "";
+                //         fittedModels.map(function(model) {
+                //             var el = document.createElement("div");
+                //             el.className = "slide";
+                //             el.style = "background-image:url(" + model.imageUrl + ")";
+                //             $("#modelContent").appendChild(el);
+                //         });
+                //         $("#virtual-model-size").innerHTML = fittedModels[choosedFiitedModelIndex].size || "-";
+                //         $("#virtual-model-tall").innerHTML = fittedModels[choosedFiitedModelIndex].tall || "-";
+                //
+                //         // set carousel
+                //         carousel = document.querySelector('#fashionade-virtual-fitting .models');
+                //         carouselContent = document.querySelector('#fashionade-virtual-fitting .models-content');
+                //         slides = document.querySelectorAll('#fashionade-virtual-fitting .slide');
+                //         arrayOfSlides = Array.prototype.slice.call(slides);
+                //         getCarouselSize();
+                //         moveSlidesRight();
+                //
+                //         // fitted default item
+                //         $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
+                //
+                //         // get items(get all categories for matching productId)
+                //         get(config.proxy + config.APIs.items + '&apiKey=' + config.apiKey + '&productId=' + productId + '&category=TOP', function (d) {
+                //             d.map(function(item) {
+                //                 chooseItems.TOPS.push(item);
+                //                 if(productId === item.productId) {
+                //                     fittedItems.TOPS = item.itemId;
+                //                 }
+                //             });
+                //
+                //             // show choose items
+                //             if(fittedItems.TOPS !== null) {
+                //                 showItems("BOTTOM");
+                //             } else {
+                //                 showItems("TOP");
+                //             }
+                //         });
+                //         get(config.proxy + config.APIs.items + '&apiKey=' + config.apiKey + '&productId=' + productId + '&category=BOTTOM', function (d) {
+                //             d.map(function(item) {
+                //                 chooseItems.BOTTOMS.push(item);
+                //                 if(productId === item.productId) {
+                //                     fittedItems.BOTTOMS = item.itemId;
+                //                 }
+                //             });
+                //
+                //             // show choose items
+                //             if(fittedItems.TOPS !== null) {
+                //                 showItems("BOTTOM");
+                //             } else {
+                //                 showItems("TOP");
+                //             }
+                //
+                //             // console.log(fittedItems, chooseItems);
+                //         });
+                //     }
+                // });
                 clearInterval(TMP_INTERVAL);
             }
         }, 500);
