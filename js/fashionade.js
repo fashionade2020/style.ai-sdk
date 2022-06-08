@@ -214,29 +214,29 @@ var FASHIONADE = (function ($w) {
         },
     }
     var cache = {},
-    tmpl = function (str, data) {
-        var fn = !/\W/.test(str)
-            ? (cache[str] = cache[str] || tmpl(document.getElementById(str).innerHTML))
-            : new Function(
-                'obj',
-                'var p=[],print=function(){p.push.apply(p,arguments);};' +
-                "with(obj){p.push('" +
-                str
-                    .replace(/[\r\t\n]/g, ' ')
-                    .split('<%')
-                    .join('\t')
-                    .replace(/((^|%>)[^\t]*)'/g, '$1\r')
-                    .replace(/\t=(.*?)%>/g, "',$1,'")
-                    .split('\t')
-                    .join("');")
-                    .split('%>')
-                    .join("p.push('")
-                    .split('\r')
-                    .join("\\'") +
-                "');}return p.join('');"
-            )
-        return data ? fn(data) : fn
-    }
+        tmpl = function (str, data) {
+            var fn = !/\W/.test(str)
+                ? (cache[str] = cache[str] || tmpl(document.getElementById(str).innerHTML))
+                : new Function(
+                    'obj',
+                    'var p=[],print=function(){p.push.apply(p,arguments);};' +
+                    "with(obj){p.push('" +
+                    str
+                        .replace(/[\r\t\n]/g, ' ')
+                        .split('<%')
+                        .join('\t')
+                        .replace(/((^|%>)[^\t]*)'/g, '$1\r')
+                        .replace(/\t=(.*?)%>/g, "',$1,'")
+                        .split('\t')
+                        .join("');")
+                        .split('%>')
+                        .join("p.push('")
+                        .split('\r')
+                        .join("\\'") +
+                    "');}return p.join('');"
+                )
+            return data ? fn(data) : fn
+        }
 
     var render = function (renderWrapperId, templateId) {
         get(config.apiUrl + utils.jsonToParams(config.apiParams), function (d) {
@@ -627,7 +627,7 @@ var FASHIONADE = (function ($w) {
         }
 
         // call composite image
-        get(tmpConfig.proxy + tmpConfig.APIs.composite + '?modelId=' + fittedModels[choosedFiitedModelIndex].id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
+        get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + fittedModels[choosedFiitedModelIndex].id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
             fittedModels[choosedFiitedModelIndex].fittedImageUrl = d.imageUrl;
             console.log(d.imageUrl);
             $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + d.imageUrl + '")';
