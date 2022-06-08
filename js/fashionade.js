@@ -382,7 +382,7 @@ var FASHIONADE = (function ($w) {
         '    <div class="layer-category-list">\n' +
         '        <h4>Add Item</h4>\n' +
         '        <ul>\n' +
-        '            <li onClick="FASHIONADE.getTopCategory()">Top</li>\n' +
+        // '            <li onClick="FASHIONADE.getTopCategory()">Top</li>\n' +
         '            <li onClick="FASHIONADE.getBottomCategory()">Bottom</li>\n' +
         '        </ul>\n' +
         '        <button class="btn-close" onClick="FASHIONADE.hideCategories()">닫기</button>\n' +
@@ -408,25 +408,27 @@ var FASHIONADE = (function ($w) {
         slides = document.querySelectorAll('#fashionade-virtual-fitting .slide');
         arrayOfSlides = Array.prototype.slice.call(slides);
 
+        // reset markup
+        if($("#fashionade-virtual-fitting") !== null) {
+            $("#fashionade-virtual-fitting").innerHTML = "";
+        }
+
         productId = $$(".product-desc-value")[2].innerText;
         // productId = "1912232960"; //temp value
         get(tmpConfig.proxy + tmpConfig.APIs.models + '?apiKey=' + tmpConfig.apiKey + '&productId=' + productId, function (d) {
             if(d.length > 0) {
 
                 // add markup and button
-                if($("#fashionade-virtual-fitting") === null) {
-                    var el = document.createElement("div");
-                    el.id = "fashionade-virtual-fitting";
-                    document.body.appendChild(el);
-                }
-                if($("#fashionade-virtual-fitting").innerHTML === "") {
-                    el.innerHTML = html;
-                }
+                var el = document.createElement("div");
+                el.id = "fashionade-virtual-fitting";
+                el.innerHTML = html;
+                document.body.appendChild(el);
+
                 if($("#btn-fashionade-virtual-fitting") === null) {
                     var el = document.createElement("button");
                     el.id = "btn-fashionade-virtual-fitting";
                     el.onclick = function() {
-                        FASHIONADE.tmpInit();
+                        $("#fashionade-virtual-fitting").style.visibility = "visible";
                     };
                     $(".item-detail-img-container").appendChild(el);
                 }
@@ -681,7 +683,7 @@ var FASHIONADE = (function ($w) {
             $("#fashionade-virtual-fitting").style.visibility = "visible";
         },
         closeFashionadeVirtualFitting : function() {
-            $("#fashionade-virtual-fitting").innerHTML = "";
+            $("#fashionade-virtual-fitting").style.visibility = "hidden";
         },
         prevModel : function() {
             movePrev();
