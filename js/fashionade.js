@@ -321,16 +321,19 @@ var FASHIONADE = (function ($w) {
     attachLogEventToButtons()
     //render();
   })
-
+  var tmpInterval = null;
   var init = function (_config, _ext) {
     config.apiUrl = _config.apiUrl || (location.host.indexOf('thetose.com') > -1 ? 'https://www.fashionade.ai/api/v2/recommend-products' : 'https://styleapi.fashionade.ai/api/recommend')
     config.apiParams.apiKey = _config.apiKey //'fa_9sdf9d8f982394hds9fhs9h929a'
     config.apiParams.productId = _config.productId
     config.logExt = _ext
     
-      document.addEventListener('DOMContentLoaded', function () {
-console.log(        document.querySelectorAll(".product-desc-value")[2])
-      })
+    tmpInterval = setInterval(function() {
+      if(document.querySelectorAll(".product-desc-value")[2])) {
+          console.log(document.querySelectorAll("body"));
+          clearInterval(tmpInterval);
+      }
+    }, 1000);
   }
 
   return {
