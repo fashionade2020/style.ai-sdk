@@ -398,15 +398,16 @@ var FASHIONADE = (function ($w) {
         TOPS : [],
         BOTTOMS : []
     };
-    var choosedFiitedModelIndex = 0;
-    var carousel = document.querySelector('#fashionade-virtual-fitting .models');
-    var carouselContent = document.querySelector('#fashionade-virtual-fitting .models-content');
-    var slides = document.querySelectorAll('#fashionade-virtual-fitting .slide');
-    var arrayOfSlides = Array.prototype.slice.call(slides);
-    var lengthOfSlide;
     var moving = true;
+    var choosedFiitedModelIndex = 0;
+    var carousel, carouselContent, slides, arrayOfSlides, arrayOfSlides, lengthOfSlide;
 
     var tmpInit = function (_config, _ext) {
+        carousel = document.querySelector('#fashionade-virtual-fitting .models');
+        carouselContent = document.querySelector('#fashionade-virtual-fitting .models-content');
+        slides = document.querySelectorAll('#fashionade-virtual-fitting .slide');
+        arrayOfSlides = Array.prototype.slice.call(slides);
+        
         // reset markup
         if($("#fashionade-virtual-fitting") !== null) {
             $("#fashionade-virtual-fitting").innerHTML = "";
