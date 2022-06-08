@@ -329,10 +329,6 @@ var FASHIONADE = (function ($w) {
     config.logExt = _ext
   }
 
-  var tmpInit = function (_tmpConfig, _ext) {
-    console.log(1, document.querySelectorAll(".product-desc-value")[2].innerText)
-  }
-
   return {
     RECOMMEND_INDEX: function () {
       return RECOMMEND.INDEX
@@ -357,8 +353,6 @@ var FASHIONADE = (function ($w) {
         } else {
           render()
         }
-
-        tempInit();
       }
     },
     init: init,
