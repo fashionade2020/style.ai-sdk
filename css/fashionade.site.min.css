@@ -24,7 +24,6 @@
     box-sizing:content-box !important;
 }
 #fashionade-virtual-fitting {
-    visibility: hidden;
     position:fixed;
     top:0;
     bottom:0;
