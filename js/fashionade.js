@@ -441,7 +441,7 @@ var FASHIONADE = (function ($w) {
     }
 
     function setModels() {
-        get(config.proxy + config.APIs.models + '?apiKey=' + config.apiKey + '&productId=' + productId, function (d) {
+        get(tmpConfig.proxy + tmpConfig.APIs.models + '?apiKey=' + tmpConfig.apiKey + '&productId=' + productId, function (d) {
             if(d.length > 0) {
 
                 // add markup and button
@@ -502,7 +502,7 @@ var FASHIONADE = (function ($w) {
                 moveSlidesRight();
 
                 // get choose items(get all categories for matching productId) 임시로 탑과 바텀 두번 찌름.
-                get(config.proxy + config.APIs.items + '&apiKey=' + config.apiKey + '&productId=' + productId + '&category=TOP', function (d) {
+                get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=TOP', function (d) {
                     chooseItems.TOPS = [];
                     d.map(function(item) {
                         chooseItems.TOPS.push(item);
@@ -516,7 +516,7 @@ var FASHIONADE = (function ($w) {
                         // fitted default item
                         $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
                         fittedModels.map(function(m, i) {
-                            get(config.proxy + config.APIs.composite + '?modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
+                            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
                                 m.defaultImageUrl = d.imageUrl;
                                 $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
                                 if(i === fittedModels.length - 1) {
@@ -530,7 +530,7 @@ var FASHIONADE = (function ($w) {
                         showItems("TOP");
                     }
                 });
-                get(config.proxy + config.APIs.items + '&apiKey=' + config.apiKey + '&productId=' + productId + '&category=BOTTOM', function (d) {
+                get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=BOTTOM', function (d) {
                     chooseItems.BOTTOMS = [];
                     d.map(function(item) {
                         chooseItems.BOTTOMS.push(item);
@@ -546,7 +546,7 @@ var FASHIONADE = (function ($w) {
                         // fitted default item
                         $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
                         fittedModels.map(function(m, i) {
-                            get(config.proxy + config.APIs.composite + '?modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
+                            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
                                 m.defaultImageUrl = d.imageUrl;
                                 $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
                                 if(i === fittedModels.length - 1) {
@@ -696,7 +696,7 @@ var FASHIONADE = (function ($w) {
 
         //call composite image
         fittedModels.map(function(m, i) {
-            get(config.proxy + config.APIs.composite + '?modelId=' + m.id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
+            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?modelId=' + m.id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
                 m.fittedImageUrl = d.imageUrl;
 
                 //hard code
@@ -774,7 +774,7 @@ var FASHIONADE = (function ($w) {
         getParam: getParam,
         render: function (opts) {
             if (opts && opts.productId) {
-                config.apiParams.productId = opts.productId
+                tmpConfig.apiParams.productId = opts.productId
                 if (opts && opts.templateWrapId && opts.templateId) {
                     render(opts.templateWrapId, opts.templateId)
                 } else {
