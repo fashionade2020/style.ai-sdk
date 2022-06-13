@@ -343,11 +343,11 @@ var FASHIONADE = (function ($w) {
         proxy : '',
     }
 
-    var html =  '    <div class="dimmed"></div>\n' +
+     var html =  '    <div class="dimmed"></div>\n' +
         '    <div class="wrap">\n' +
         '        <div class="header">\n' +
         '            <h4>VIRTUAL FITTING</h4>\n' +
-        '            <button class="btn-close" onClick="FASHIONADE.closeFashionadeVirtualFitting()">닫기</button>\n' +
+        '            <button class="btn-close" onClick="FASHIONADE.closeFashionadeVirtualFitting1()">닫기</button>\n' +
         '        </div>\n' +
         '        <div class="horizon-wrap">\n' +
         '            <div class="models">\n' +
@@ -358,7 +358,7 @@ var FASHIONADE = (function ($w) {
         '            </div>\n' +
         '            <div class="change-model">\n' +
         '                <div class="size">\n' +
-        '                    Size <span id="virtual-model-size">M</span><span class="bar">|</span><span id="virtual-model-tall">170</span>cm\n' +
+        '                    Size <span id="virtual-model-size">-</span><span class="bar">|</span><span id="virtual-model-tall">-</span>cm, <span id="virtual-model-weight">-</span>kg\n' +
         '                </div>\n' +
         '                <button class="btn-change-model" onClick="FASHIONADE.changeModel()">CHANGE MODEL</button>\n' +
         '                <button class="btn-choose-model" onClick="FASHIONADE.chooseModel()">CHOOSE MODEL</button>\n' +
@@ -366,7 +366,7 @@ var FASHIONADE = (function ($w) {
         '            <div class="fitted-items">\n' +
         '                <ul>\n' +
         '                    <li class="default">\n' +
-        '                        <img src="http://image.sivillage.com/upload/C00001/goods/org/099/200121000552099.jpg?RS=600&SP=1" width="75" height="75" alt="" />\n' +
+        '                        <img src="" width="75" height="75" alt="" />\n' +
         '                    </li>\n' +
         '                    <li id="addFittedItem" style="width:0">\n' +
         '                    </li>\n' +
@@ -377,6 +377,27 @@ var FASHIONADE = (function ($w) {
         '                <h4 id="prepared-category-title"></h4>\n' +
         '                <ul></ul>\n' +
         '            </div>\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '    <div class="wrap1">\n' +
+        '        <div class="header">\n' +
+        '            <h4>Your Measurements</h4>\n' +
+        '            <button class="btn-close" onClick="FASHIONADE.closeFashionadeVirtualFitting()">닫기</button>\n' +
+        '        </div>\n' +
+        '        <div class="wrapInputMeasurements">\n' +
+        '           <div class="gender">\n' +
+        '               <label htmlFor="genderFemale" class="female"><input type="checkbox" name="gender" id="genderFemale" /></label>\n' +
+        '               <label htmlFor="genderMale" class="male"><input type="checkbox" name="gender" id="genderMale" /></label>\n' +
+        '           </div>\n' +
+        '           <div class="height">\n' +
+        '               <h6>Height</h6>\n' +
+        '               <p><input type="number" id="height" value="165"/><span>cm</span></p>\n' +
+        '           </div>\n' +
+        '           <div class="weight">\n' +
+        '               <h6>Weight</h6>\n' +
+        '               <p><input type="number" id="weight" value="51"/><span>kg</span></p>\n' +
+        '           </div>\n' +
+        '           <button class="btn-see-model" onClick="FASHIONADE.showStep2()">SEE MODELS</button>\n' +
         '        </div>\n' +
         '    </div>\n' +
         '    <div class="layer-category-list">\n' +
@@ -626,26 +647,63 @@ var FASHIONADE = (function ($w) {
             fittedItems.BOTTOMS = itemId;
         }
 
-        // call composite image
-        get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + fittedModels[choosedFiitedModelIndex].id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
-            fittedModels[choosedFiitedModelIndex].fittedImageUrl = d.imageUrl;
-            console.log(d.imageUrl);
-            $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + d.imageUrl + '")';
-        });
+        //call composite image
+        fittedModels.map(function(m, i) {
+            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?modelId=' + m.id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
+                m.fittedImageUrl = d.imageUrl;
 
+                //hard code
+                //0 1 2 3
+                //2 0 1 2
+                //0 1 2 0
+                //1 2 0 1
+                if(choosedFiitedModelIndex === 0) {
+                    $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                } else if(choosedFiitedModelIndex === 1) {
+                    $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                } else if(choosedFiitedModelIndex === 2) {
+                    $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                }
+            });
+        });
         $("#addFittedItem").innerHTML = '<img src="' + imageUrl + '" width="75" height="75" alt="" /><button class="btn-delete" onClick="FASHIONADE.removeItem(\'' + category + '\')">삭제</button>';
         $("#addFittedItem").style.width = "75px";
     }
 
     function removeFittedItem(category) {
         if(category === "TOP") {
-            fittedItems.TOPS = null;
+            //데모에서 탑이 기본이라 없애면 안됨.
+            //fittedItems.TOPS = null;
         } else {
             fittedItems.BOTTOMS = null;
         }
         // reset default model
-        fittedModels[choosedFiitedModelIndex].fittedImageUrl = "";
-        $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[choosedFiitedModelIndex].imageUrl + '")';
+        //hard code
+        if(choosedFiitedModelIndex === 0) {
+            $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[2].defaultImageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[0].defaultImageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[1].defaultImageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[2].defaultImageUrl + '")';
+        } else if(choosedFiitedModelIndex === 1) {
+            $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[0].defaultImageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[1].defaultImageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[2].defaultImageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[0].defaultImageUrl + '")';
+        } else if(choosedFiitedModelIndex === 2) {
+            $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[1].defaultImageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[2].defaultImageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[0].defaultImageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[1].defaultImageUrl + '")';
+        }
 
         $("#addFittedItem").innerHTML = "";
         $("#addFittedItem").style.width = "0";
