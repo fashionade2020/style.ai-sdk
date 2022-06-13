@@ -436,6 +436,11 @@ var FASHIONADE = (function ($w) {
 
         productId = $$(".product-desc-value")[2].innerText;
         // productId = "1912232960"; //temp value
+        
+        setModels();
+    }
+    
+    function setModels() {
         get(tmpConfig.proxy + tmpConfig.APIs.models + '?apiKey=' + tmpConfig.apiKey + '&productId=' + productId, function (d) {
             if(d.length > 0) {
 
@@ -454,8 +459,29 @@ var FASHIONADE = (function ($w) {
                     $(".item-detail-img-container").appendChild(el);
                 }
 
-                // add models
+                // asc sorted by tall & closet tall & change target's index is 0.
+                var matchedIndex = 0;
+                var mTall = document.querySelector("#height").value;
+                var mWeight = document.querySelector("#weight").value;
+                d.sort((a, b) => {
+                    return a.tall - b.tall;
+                });
+                var tallMatchedIndex = d.indexOf(d.reduce(function(prev, curr) {
+                    return (Math.abs(curr.tall - mTall) < Math.abs(prev.tall - mTall) ? curr : prev);
+                }));
+                d.unshift(d.splice(tallMatchedIndex, 1)[0] );
                 fittedModels = d;
+
+                // loop models for checked gender.
+                for(var i = 0, l = d.length; i < l; i++) {
+                    if(d[i].gender === "FEMALE") {
+                        document.querySelector("#genderFemale").checked = true;
+                    } else if(d[i].gender === "MALE") {
+                        document.querySelector("#genderMale").checked = true;
+                    }
+                }
+
+                // reset models markup.
                 $("#modelContent").innerHTML = "";
                 fittedModels.map(function(model) {
                     var el = document.createElement("div");
@@ -465,6 +491,7 @@ var FASHIONADE = (function ($w) {
                 });
                 $("#virtual-model-size").innerHTML = fittedModels[choosedFiitedModelIndex].size || "-";
                 $("#virtual-model-tall").innerHTML = fittedModels[choosedFiitedModelIndex].tall || "-";
+                $("#virtual-model-weight").innerHTML = fittedModels[choosedFiitedModelIndex].weight || "-";
 
                 // set carousel
                 carousel = document.querySelector('#fashionade-virtual-fitting .models');
@@ -474,11 +501,9 @@ var FASHIONADE = (function ($w) {
                 getCarouselSize();
                 moveSlidesRight();
 
-                // fitted default item
-                $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
-
-                // get items(get all categories for matching productId)
+                // get choose items(get all categories for matching productId) 임시로 탑과 바텀 두번 찌름.
                 get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=TOP', function (d) {
+                    chooseItems.TOPS = [];
                     d.map(function(item) {
                         chooseItems.TOPS.push(item);
                         if(productId === item.productId) {
@@ -488,12 +513,25 @@ var FASHIONADE = (function ($w) {
 
                     // show choose items
                     if(fittedItems.TOPS !== null) {
+                        // fitted default item
+                        $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
+                        fittedModels.map(function(m, i) {
+                            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
+                                m.defaultImageUrl = d.imageUrl;
+                                $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
+                                if(i === fittedModels.length - 1) {
+                                    $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + d.imageUrl + '")';
+                                }
+                            });
+                        });
+
                         showItems("BOTTOM");
                     } else {
                         showItems("TOP");
                     }
                 });
                 get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=BOTTOM', function (d) {
+                    chooseItems.BOTTOMS = [];
                     d.map(function(item) {
                         chooseItems.BOTTOMS.push(item);
                         if(productId === item.productId) {
@@ -505,10 +543,19 @@ var FASHIONADE = (function ($w) {
                     if(fittedItems.TOPS !== null) {
                         showItems("BOTTOM");
                     } else {
+                        // fitted default item
+                        $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
+                        fittedModels.map(function(m, i) {
+                            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
+                                m.defaultImageUrl = d.imageUrl;
+                                $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
+                                if(i === fittedModels.length - 1) {
+                                    $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + d.imageUrl + '")';
+                                }
+                            });
+                        });
                         showItems("TOP");
                     }
-
-                    // console.log(fittedItems, chooseItems);
                 });
             }
         });
@@ -742,6 +789,15 @@ var FASHIONADE = (function ($w) {
         },
         closeFashionadeVirtualFitting : function() {
             $("#fashionade-virtual-fitting").style.visibility = "hidden";
+            $("#fashionade-virtual-fitting .wrap1").style.display = "";
+        },
+        closeFashionadeVirtualFitting1 : function() {
+            $("#fashionade-virtual-fitting").style.visibility = "hidden";
+            $("#fashionade-virtual-fitting .wrap1").style.display = "";
+        },
+        showStep2: function() {
+            setModels();
+            $("#fashionade-virtual-fitting .wrap1").style.display = "none";
         },
         prevModel : function() {
             movePrev();
