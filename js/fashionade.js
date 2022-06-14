@@ -348,6 +348,7 @@ var FASHIONADE = (function ($w) {
         '        <div class="header">\n' +
         '            <h4>VIRTUAL FITTING</h4>\n' +
         '            <button class="btn-close" onClick="FASHIONADE.closeFashionadeVirtualFitting1()">닫기</button>\n' +
+        '            <button class="btn-edit" onClick="FASHIONADE.openEditMode()">편집</button>\n' +
         '        </div>\n' +
         '        <div class="horizon-wrap">\n' +
         '            <div class="models">\n' +
@@ -372,6 +373,7 @@ var FASHIONADE = (function ($w) {
         '                    </li>\n' +
         '                    <li class="btn-add" onClick="FASHIONADE.showCategories()">추가</li>\n' +
         '                </ul>\n' +
+        '                <div class="notice">가상 모델의 기본 의상은 변경 불가입니다.</div>\n' +
         '            </div>\n' +
         '            <div class="prepared-items">\n' +
         '                <h4 id="prepared-category-title"></h4>\n' +
@@ -386,8 +388,8 @@ var FASHIONADE = (function ($w) {
         '        </div>\n' +
         '        <div class="wrapInputMeasurements">\n' +
         '           <div class="gender">\n' +
-        '               <label htmlFor="genderFemale" class="female"><input type="checkbox" name="gender" id="genderFemale" /></label>\n' +
-        '               <label htmlFor="genderMale" class="male"><input type="checkbox" name="gender" id="genderMale" /></label>\n' +
+        '               <div class="female"></div>\n' +
+        '               <div class="male"></div>\n' +
         '           </div>\n' +
         '           <div class="height">\n' +
         '               <h6>Height</h6>\n' +
@@ -546,7 +548,7 @@ var FASHIONADE = (function ($w) {
                         // fitted default item
                         $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
                         fittedModels.map(function(m, i) {
-                            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
+                            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
                                 m.defaultImageUrl = d.imageUrl;
                                 $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
                                 if(i === fittedModels.length - 1) {
@@ -696,7 +698,7 @@ var FASHIONADE = (function ($w) {
 
         //call composite image
         fittedModels.map(function(m, i) {
-            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?modelId=' + m.id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
+            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
                 m.fittedImageUrl = d.imageUrl;
 
                 //hard code
@@ -774,7 +776,7 @@ var FASHIONADE = (function ($w) {
         getParam: getParam,
         render: function (opts) {
             if (opts && opts.productId) {
-                tmpConfig.apiParams.productId = opts.productId
+                config.apiParams.productId = opts.productId
                 if (opts && opts.templateWrapId && opts.templateId) {
                     render(opts.templateWrapId, opts.templateId)
                 } else {
