@@ -510,7 +510,7 @@ var FASHIONADE = (function ($w) {
         getCarouselSize();
         moveSlidesRight();
 
-        removeFittedItem();
+        removeFittedItem("BOTTOM");
 
         // get choose items(get all categories for matching productId) 임시로 탑과 바텀 두번 찌름.
         get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=TOP', function (d) {
@@ -749,7 +749,6 @@ var FASHIONADE = (function ($w) {
         });
         $("#addFittedItem").innerHTML = '<img src="' + imageUrl + '" width="75" height="75" alt="" /><button class="btn-delete" onClick="FASHIONADE.removeItem(\'' + category + '\')">삭제</button>';
         $("#addFittedItem").style.width = "75px";
-        console.log(fittedModels)
     }
 
     function removeFittedItem(category) {
@@ -872,7 +871,7 @@ var FASHIONADE = (function ($w) {
             document.querySelector("#fashionade-virtual-fitting .fitted-items .notice").style.display = "block";
             document.querySelector("#fashionade-virtual-fitting .header .btn-edit").style.display = "block";
 
-            removeFittedItem();
+            removeFittedItem("BOTTOM");
         },
         chooseModel : chooseModel,
         showCategories : function() {
