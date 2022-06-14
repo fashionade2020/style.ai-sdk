@@ -510,6 +510,8 @@ var FASHIONADE = (function ($w) {
         getCarouselSize();
         moveSlidesRight();
 
+        removeFittedItem();
+
         // get choose items(get all categories for matching productId) 임시로 탑과 바텀 두번 찌름.
         get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=TOP', function (d) {
             chooseItems.TOPS = [];
