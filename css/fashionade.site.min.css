@@ -253,8 +253,10 @@
     padding-left:15px;
 }
 #fashionade-virtual-fitting .prepared-items ul {
+    overflow: hidden;
     list-style:none;
     margin-top:10px;
+    padding-bottom:30px;
 }
 #fashionade-virtual-fitting .prepared-items li {
     float:left;
