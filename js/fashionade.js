@@ -348,7 +348,6 @@ var FASHIONADE = (function ($w) {
         '        <div class="header">\n' +
         '            <h4>VIRTUAL FITTING</h4>\n' +
         '            <button class="btn-close" onClick="FASHIONADE.closeFashionadeVirtualFitting1()">닫기</button>\n' +
-        '            <button class="btn-edit" onClick="FASHIONADE.openEditMode()">편집</button>\n' +
         '        </div>\n' +
         '        <div class="horizon-wrap">\n' +
         '            <div class="models">\n' +
@@ -373,7 +372,6 @@ var FASHIONADE = (function ($w) {
         '                    </li>\n' +
         '                    <li class="btn-add" onClick="FASHIONADE.showCategories()">추가</li>\n' +
         '                </ul>\n' +
-        '                <div class="notice">가상 모델의 기본 의상은 변경 불가입니다.</div>\n' +
         '            </div>\n' +
         '            <div class="prepared-items">\n' +
         '                <h4 id="prepared-category-title"></h4>\n' +
@@ -388,8 +386,8 @@ var FASHIONADE = (function ($w) {
         '        </div>\n' +
         '        <div class="wrapInputMeasurements">\n' +
         '           <div class="gender">\n' +
-        '               <div class="female"></div>\n' +
-        '               <div class="male"></div>\n' +
+        '               <label htmlFor="genderFemale" class="female"><input type="checkbox" name="gender" id="genderFemale" /></label>\n' +
+        '               <label htmlFor="genderMale" class="male"><input type="checkbox" name="gender" id="genderMale" /></label>\n' +
         '           </div>\n' +
         '           <div class="height">\n' +
         '               <h6>Height</h6>\n' +
