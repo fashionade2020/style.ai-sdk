@@ -729,7 +729,7 @@ var FASHIONADE = (function ($w) {
             fittedItems.BOTTOMS = itemId;
         }
 
-        var isChooseMode = $$("#fashionade-virtual-fitting .change-model choosemode").length;
+        var isChooseMode = $$("#fashionade-virtual-fitting .choosemode").length;
         if(isChooseMode > 0) {
 
         } else {
