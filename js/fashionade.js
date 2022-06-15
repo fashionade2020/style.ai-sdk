@@ -518,7 +518,11 @@ var FASHIONADE = (function ($w) {
             d.map(function(item) {
                 chooseItems.TOPS.push(item);
                 if(productId === item.productId) {
-                    fittedItems.TOPS = item.itemId;
+                    if(byBtnStep2) {
+                        fittedItems.TOPS = 0;
+                    } else {
+                        fittedItems.TOPS = item.itemId;
+                    }
                 }
             });
 
