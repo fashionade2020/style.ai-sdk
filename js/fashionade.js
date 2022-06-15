@@ -577,10 +577,10 @@ var FASHIONADE = (function ($w) {
                     //     }
                     // });
                     m.defaultImageUrl = m.imageUrl;
-                    // $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + m.imageUrl + '")';
-                    // if(i === fittedModels.length - 1) {
-                    //     $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + m.imageUrl + '")';
-                    // }
+                    $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + m.imageUrl + '")';
+                    if(i === fittedModels.length - 1) {
+                        $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + m.imageUrl + '")';
+                    }
                 });
                 showItems("TOP");
             }
@@ -729,34 +729,40 @@ var FASHIONADE = (function ($w) {
             fittedItems.BOTTOMS = itemId;
         }
 
-        //call composite image
-        fittedModels.map(function(m, i) {
-            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
-                m.fittedImageUrl = d.imageUrl;
+        var isChooseMode = $$("#fashionade-virtual-fitting .change-model choosemode").length;
+        if(isChooseMode > 0) {
 
-                //hard code
-                //0 1 2 3
-                //2 0 1 2
-                //0 1 2 0
-                //1 2 0 1
-                if(choosedFiitedModelIndex === 0) {
-                    $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
-                    $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
-                    $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
-                    $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
-                } else if(choosedFiitedModelIndex === 1) {
-                    $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
-                    $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
-                    $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
-                    $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
-                } else if(choosedFiitedModelIndex === 2) {
-                    $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
-                    $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
-                    $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
-                    $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
-                }
+        } else {
+            //call composite image
+            fittedModels.map(function(m, i) {
+                get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
+                    m.fittedImageUrl = d.imageUrl;
+
+                    //hard code
+                    //0 1 2 3
+                    //2 0 1 2
+                    //0 1 2 0
+                    //1 2 0 1
+                    if(choosedFiitedModelIndex === 0) {
+                        $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                        $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                        $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                        $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                    } else if(choosedFiitedModelIndex === 1) {
+                        $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                        $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                        $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                        $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                    } else if(choosedFiitedModelIndex === 2) {
+                        $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                        $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                        $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                        $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                    }
+                });
             });
-        });
+        }
+        
         $("#addFittedItem").innerHTML = '<img src="' + imageUrl + '" width="75" height="75" alt="" /><button class="btn-delete" onClick="FASHIONADE.removeItem(\'' + category + '\')">삭제</button>';
         $("#addFittedItem").style.width = "75px";
     }
