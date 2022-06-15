@@ -527,17 +527,18 @@ var FASHIONADE = (function ($w) {
                 // fitted default item
                 $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
                 fittedModels.map(function(m, i) {
-                    get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
-                        m.defaultImageUrl = d.imageUrl;
-                        $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
-                        if(i === fittedModels.length - 1) {
-                            $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + d.imageUrl + '")';
-                        }
-                    });
-                    // $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + m.imageUrl + '")';
-                    // if(i === fittedModels.length - 1) {
-                    //     $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + m.imageUrl + '")';
-                    // }
+                    // get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
+                    //     m.defaultImageUrl = d.imageUrl;
+                    //     $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
+                    //     if(i === fittedModels.length - 1) {
+                    //         $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + d.imageUrl + '")';
+                    //     }
+                    // });
+                    m.defaultImageUrl = m.imageUrl
+                    $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + m.imageUrl + '")';
+                    if(i === fittedModels.length - 1) {
+                        $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + m.imageUrl + '")';
+                    }
                 });
 
                 showItems("BOTTOM");
@@ -568,13 +569,14 @@ var FASHIONADE = (function ($w) {
                 // fitted default item
                 $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
                 fittedModels.map(function(m, i) {
-                    get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
-                        m.defaultImageUrl = d.imageUrl;
-                        $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
-                        if(i === fittedModels.length - 1) {
-                            $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + d.imageUrl + '")';
-                        }
-                    });
+                    // get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
+                    //     m.defaultImageUrl = d.imageUrl;
+                    //     $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
+                    //     if(i === fittedModels.length - 1) {
+                    //         $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + d.imageUrl + '")';
+                    //     }
+                    // });
+                    m.defaultImageUrl = m.imageUrl;
                     // $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + m.imageUrl + '")';
                     // if(i === fittedModels.length - 1) {
                     //     $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + m.imageUrl + '")';
