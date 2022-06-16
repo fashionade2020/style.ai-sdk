@@ -202,7 +202,7 @@
 #fashionade-virtual-fitting .fitted-items {
     margin: 30px 0 0 26px;
     clear:both;
-    width:450px;
+    width:448px;
     height:88px;
     border:1px solid #e1e1e1;
     border-radius:5px;
@@ -245,14 +245,38 @@
     text-align:center;
 }
 #fashionade-virtual-fitting .prepared-items {
-    margin: 30px 0 0 26px;
-    clear:both;
+    position:absolute;
+    padding: 30px 0 0 26px;
     width:450px;
+    background-color:#fff;
+}
+#fashionade-virtual-fitting .prepared-items.see-all {
+    top:0;
+    bottom:0;
 }
 #fashionade-virtual-fitting .prepared-items h4 {
     padding-left:15px;
 }
+#fashionade-virtual-fitting .prepared-items .see-all,
+#fashionade-virtual-fitting .prepared-items .back {
+    position:absolute;
+    background-color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+    right: 15px;
+    top: 30px;
+    cursor:pointer;
+}
+#fashionade-virtual-fitting .prepared-items .back,
+#fashionade-virtual-fitting .prepared-items.see-all .see-all{
+    display:none;
+}
+#fashionade-virtual-fitting .prepared-items.see-all .back {
+    display:block;
+}
 #fashionade-virtual-fitting .prepared-items ul {
+    clear:both;
     overflow: hidden;
     list-style:none;
     margin-top:10px;
@@ -262,6 +286,12 @@
     float:left;
     margin:10px 0 20px 16px;
     width:100px;
+}
+#fashionade-virtual-fitting .prepared-items li:nth-child(n+5) {
+    display:none;
+}
+#fashionade-virtual-fitting .prepared-items.see-all li {
+    display:block;
 }
 #fashionade-virtual-fitting .prepared-items li .thumb {
     position:relative;
@@ -280,6 +310,9 @@
 #fashionade-virtual-fitting .prepared-items li.selected .thumb .ico {
     display:block;
 }
+#fashionade-virtual-fitting .change-model.choosemode ~ .prepared-items li.selected .thumb .ico {
+    display:none;
+}
 #fashionade-virtual-fitting .prepared-items li:first-of-type {
     margin-left:0;
 }
@@ -289,6 +322,12 @@
 }
 #fashionade-virtual-fitting .prepared-items li:hover .thumb {
     border-color:#000;
+}
+#fashionade-virtual-fitting .prepared-items li:hover p {
+    cursor:pointer;
+}
+#fashionade-virtual-fitting .change-model.choosemode ~ .prepared-items li:hover .thumb {
+    border:1px solid #e2e2e2;
 }
 #fashionade-virtual-fitting .prepared-items li .thumb {
     width:98px;
@@ -300,6 +339,9 @@
     background-position: 5px 5px;
     text-indent:-99999px;
     cursor:pointer;
+}
+#fashionade-virtual-fitting .change-model.choosemode ~ .prepared-items li .thumb {
+    cursor:default;
 }
 #fashionade-virtual-fitting .prepared-items li .desc {
     padding:15px 0 0 5px;
