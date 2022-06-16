@@ -922,6 +922,7 @@ var FASHIONADE = (function ($w) {
             document.querySelector("#fashionade-virtual-fitting .wrap1").style.display = "block";
         },
         showStep2: function() {
+            document.querySelector("#fashionade-virtual-fitting .prepared-items").className = "prepared-items";
             setModels(true);
         },
         prevModel : function() {
