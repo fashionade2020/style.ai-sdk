@@ -766,7 +766,7 @@ var FASHIONADE = (function ($w) {
 
         //call composite image
         fittedModels.map(function(m, i) {
-            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
+            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS + (fittedItems.BOTTOMS ? '&bottomId=' + fittedItems.BOTTOMS : ''), function (d) {
                 m.fittedImageUrl = d.imageUrl;
 
                 //hard code
