@@ -361,8 +361,8 @@ var FASHIONADE = (function ($w) {
         '                <div class="size">\n' +
         '                    Size <span id="virtual-model-size">-</span><span class="bar">|</span><span id="virtual-model-tall">-</span>cm, <span id="virtual-model-weight">-</span>kg\n' +
         '                </div>\n' +
-        '                <button class="btn-change-model" onClick="FASHIONADE.changeModel()">CHANGE MODEL</button>\n' +
-        '                <button class="btn-choose-model" onClick="FASHIONADE.chooseModel()">CHOOSE MODEL</button>\n' +
+        '                <button class="btn-change-model" onClick="FASHIONADE.chooseModel()">CHANGE MODEL</button>\n' +
+        '                <button class="btn-choose-model" onClick="FASHIONADE.changeModel()">CHOOSE MODEL</button>\n' +
         '            </div>\n' +
         '            <div class="fitted-items">\n' +
         '                <ul>\n' +
@@ -377,6 +377,8 @@ var FASHIONADE = (function ($w) {
         '            </div>\n' +
         '            <div class="prepared-items">\n' +
         '                <h4 id="prepared-category-title"></h4>\n' +
+        '                   <button class="see-all" onClick="document.querySelector(\'#fashionade-virtual-fitting .prepared-items\').className = \'prepared-items see-all\'">See All</button>\n' +
+        '                   <button class="back" onClick="document.querySelector(\'#fashionade-virtual-fitting .prepared-items\').className = \'prepared-items\'">Back</button>\n' +
         '                <ul></ul>\n' +
         '            </div>\n' +
         '        </div>\n' +
@@ -432,8 +434,18 @@ var FASHIONADE = (function ($w) {
         arrayOfSlides = Array.prototype.slice.call(slides);
 
         // reset markup
-        if($("#fashionade-virtual-fitting") !== null) {
-            $("#fashionade-virtual-fitting").innerHTML = "";
+        if($("#fashionade-virtual-fitting") === null) {
+            var el1 = document.createElement("div");
+            el1.id = "fashionade-virtual-fitting";
+            document.body.appendChild(el1);
+            $("#fashionade-virtual-fitting").innerHTML = html;
+
+            var el2 = document.createElement("button");
+            el2.id = "btn-fashionade-virtual-fitting";
+            el2.onclick = function() {
+                $("#fashionade-virtual-fitting").style.visibility = "visible";
+            };
+            $(".item-detail-img-container").appendChild(el2);
         }
 
         productId = $$(".product-desc-value")[2].innerText;
@@ -445,21 +457,6 @@ var FASHIONADE = (function ($w) {
     function setModels(byBtnStep2) {
         get(tmpConfig.proxy + tmpConfig.APIs.models + '?apiKey=' + tmpConfig.apiKey + '&productId=' + productId, function (d) {
             if(d.length > 0) {
-
-                // add markup and button
-                var el = document.createElement("div");
-                el.id = "fashionade-virtual-fitting";
-                el.innerHTML = html;
-                document.body.appendChild(el);
-
-                if($("#btn-fashionade-virtual-fitting") === null) {
-                    var el = document.createElement("button");
-                    el.id = "btn-fashionade-virtual-fitting";
-                    el.onclick = function() {
-                        $("#fashionade-virtual-fitting").style.visibility = "visible";
-                    };
-                    $(".item-detail-img-container").appendChild(el);
-                }
 
                 // loop models for checked gender.
                 for(var i = 0, l = d.length; i < l; i++) {
@@ -510,90 +507,120 @@ var FASHIONADE = (function ($w) {
         getCarouselSize();
         moveSlidesRight();
 
-        removeFittedItem("BOTTOM");
+        if(byBtnStep2) {
+            // fitted default item
+            $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
 
-        // get choose items(get all categories for matching productId) 임시로 탑과 바텀 두번 찌름.
-        get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=TOP', function (d) {
-            chooseItems.TOPS = [];
-            d.map(function(item) {
-                chooseItems.TOPS.push(item);
-                if(productId === item.productId) {
-                    fittedItems.TOPS = item.itemId;
-                }
-            });
+            //기본 상세상품 itemid를 알아올 수 있는 방법 없어 찔러보고 프로덕트id로 비교해서 가져 옴. 다른 방법 있으면 찾아 볼 것.
+            get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=TOP', function (d) {
+                chooseItems.TOPS = [];
+                d.map(function (item) {
+                    chooseItems.TOPS.push(item);
+                    if (productId === item.productId) {
+                        fittedItems.TOPS = item.itemId;
+                    }
+                });
 
-            // show choose items
-            if(fittedItems.TOPS !== null) {
-                // fitted default item
-                $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
                 fittedModels.map(function(m, i) {
-                    // get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
-                    //     m.defaultImageUrl = d.imageUrl;
-                    //     $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
-                    //     if(i === fittedModels.length - 1) {
-                    //         $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + d.imageUrl + '")';
-                    //     }
-                    // });
-                    m.defaultImageUrl = m.imageUrl
+                    get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
+                        m.defaultImageUrl = d.imageUrl;
+                    });
                     $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + m.imageUrl + '")';
                     if(i === fittedModels.length - 1) {
                         $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + m.imageUrl + '")';
                     }
                 });
 
-                showItems("BOTTOM");
-            } else {
-                showItems("TOP");
-            }
-
-            if(byBtnStep2){
-                chooseModel();
-                $("#fashionade-virtual-fitting .wrap1").style.display = "none";
-            } else {
-                $("#fashionade-virtual-fitting .change-model").className = "change-model choosemode";
-            }
-        });
-        get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=BOTTOM', function (d) {
-            chooseItems.BOTTOMS = [];
-            d.map(function(item) {
-                chooseItems.BOTTOMS.push(item);
-                if(productId === item.productId) {
-                    fittedItems.BOTTOMS = item.itemId;
+                if($("#fashionade-virtual-fitting .change-model").className.indexOf("choosemode") < 0) {
+                    $("#fashionade-virtual-fitting .change-model").className = "change-model choosemode";
+                    $("#fashionade-virtual-fitting .btn-prev").style.display = "block";
+                    $("#fashionade-virtual-fitting .btn-next").style.display = "block";
+                    $("#fashionade-virtual-fitting .fitted-items ul").style.display = "none";
+                    $("#fashionade-virtual-fitting .fitted-items .notice").style.display = "block";
+                    $("#fashionade-virtual-fitting .header .btn-edit").style.display = "block";
                 }
+                $("#fashionade-virtual-fitting .wrap1").style.display = "none";
             });
 
-            // show choose items
-            if(fittedItems.TOPS !== null) {
-                showItems("BOTTOM");
-            } else {
-                // fitted default item
-                $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
-                fittedModels.map(function(m, i) {
-                    // get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
-                    //     m.defaultImageUrl = d.imageUrl;
-                    //     $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
-                    //     if(i === fittedModels.length - 1) {
-                    //         $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + d.imageUrl + '")';
-                    //     }
-                    // });
-                    m.defaultImageUrl = m.imageUrl;
-                    $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + m.imageUrl + '")';
-                    if(i === fittedModels.length - 1) {
-                        $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + m.imageUrl + '")';
-                    }
+            //하단 BOTTOM ITEM 보이기
+            get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=BOTTOM', function (d) {
+                chooseItems.BOTTOMS = [];
+                d.map(function(item) {
+                    chooseItems.BOTTOMS.push(item);
+                    // if(productId === item.productId) {
+                    //     fittedItems.BOTTOMS = item.itemId;
+                    // }
                 });
-                showItems("TOP");
-            }
+                showItems("BOTTOM");
+            });
+        } else {
+            //fitting
 
-            if(byBtnStep2){
-                $("#fashionade-virtual-fitting .change-model").className = "change-model";
-                $("#fashionade-virtual-fitting .fitted-items ul").style.display = "block";
-                $("#fashionade-virtual-fitting .fitted-items .notice").style.display = "none";
-                $("#fashionade-virtual-fitting .wrap1").style.display = "none";
-            } else {
-                $("#fashionade-virtual-fitting .change-model").className = "change-model choosemode";
-            }
-        });
+            //reset fitted.
+            // removeFittedItem("BOTTOM");
+            //
+            // // get choose items(get all categories for matching productId) 임시로 탑과 바텀 두번 찌름.
+            // get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=TOP', function (d) {
+            //     chooseItems.TOPS = [];
+            //     d.map(function(item) {
+            //         chooseItems.TOPS.push(item);
+            //         if(productId === item.productId) {
+            //             fittedItems.TOPS = item.itemId;
+            //         }
+            //     });
+            //
+            //     // show choose items
+            //     if(fittedItems.TOPS !== null) {
+            //         // fitted default item
+            //         $("#fashionade-virtual-fitting .fitted-items .default img").src = $(".item-detail-img-container img").src;
+            //
+            //         fittedModels.map(function(m, i) {
+            //             get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS, function (d) {
+            //                 m.defaultImageUrl = d.imageUrl;
+            //                 // $$('#fashionade-virtual-fitting .slide')[i + 1].style.backgroundImage = 'url("' + d.imageUrl + '")';
+            //                 // if(i === fittedModels.length - 1) {
+            //                 //     $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + d.imageUrl + '")';
+            //                 // }
+            //             });
+            //         });
+            //
+            //         showItems("BOTTOM");
+            //     } else {
+            //         showItems("TOP");
+            //     }
+            //
+            //     if(byBtnStep2 && $("#fashionade-virtual-fitting .change-model").className.indexOf("choosemode") < 0) {
+            //         $("#fashionade-virtual-fitting .change-model").className = "change-model choosemode";
+            //         $("#fashionade-virtual-fitting .btn-prev").style.display = "block";
+            //         $("#fashionade-virtual-fitting .btn-next").style.display = "block";
+            //         $("#fashionade-virtual-fitting .fitted-items ul").style.display = "none";
+            //         $("#fashionade-virtual-fitting .fitted-items .notice").style.display = "block";
+            //         $("#fashionade-virtual-fitting .header .btn-edit").style.display = "block";
+            //         $("#fashionade-virtual-fitting .wrap1").style.display = "none";
+            //     }
+            // });
+            // get(tmpConfig.proxy + tmpConfig.APIs.items + '&apiKey=' + tmpConfig.apiKey + '&productId=' + productId + '&category=BOTTOM', function (d) {
+            //     chooseItems.BOTTOMS = [];
+            //     d.map(function(item) {
+            //         chooseItems.BOTTOMS.push(item);
+            //         if(productId === item.productId) {
+            //             fittedItems.BOTTOMS = item.itemId;
+            //         }
+            //     });
+            //
+            //     showItems("BOTTOM");
+            //     if(byBtnStep2 && $("#fashionade-virtual-fitting .change-model").className.indexOf("choosemode") < 0) {
+            //         $("#fashionade-virtual-fitting .change-model").className = "change-model choosemode";
+            //         $("#fashionade-virtual-fitting .btn-prev").style.display = "block";
+            //         $("#fashionade-virtual-fitting .btn-next").style.display = "block";
+            //         $("#fashionade-virtual-fitting .fitted-items ul").style.display = "none";
+            //         $("#fashionade-virtual-fitting .fitted-items .notice").style.display = "block";
+            //         $("#fashionade-virtual-fitting .header .btn-edit").style.display = "block";
+            //         $("#fashionade-virtual-fitting .wrap1").style.display = "none";
+            //     }
+            // });
+        }
+
     }
 
     function addClone() {
@@ -662,6 +689,7 @@ var FASHIONADE = (function ($w) {
 
             $("#virtual-model-size").innerHTML = fittedModels[choosedFiitedModelIndex].size || "-";
             $("#virtual-model-tall").innerHTML = fittedModels[choosedFiitedModelIndex].tall || "-";
+            $("#virtual-model-weight").innerHTML = fittedModels[choosedFiitedModelIndex].weight || "-";
         }
     }
 
@@ -687,6 +715,7 @@ var FASHIONADE = (function ($w) {
 
             $("#virtual-model-size").innerHTML = fittedModels[choosedFiitedModelIndex].size || "-";
             $("#virtual-model-tall").innerHTML = fittedModels[choosedFiitedModelIndex].tall || "-";
+            $("#virtual-model-weight").innerHTML = fittedModels[choosedFiitedModelIndex].weight || "-";
         }
     }
 
@@ -723,48 +752,46 @@ var FASHIONADE = (function ($w) {
     }
 
     function addFittedItem(category, itemId, imageUrl) {
-        if(category === "TOP") {
-            fittedItems.TOPS = itemId;
-        } else {
-            fittedItems.BOTTOMS = itemId;
+        if(itemId !== undefined) {
+            if(category === "TOP") {
+                fittedItems.TOPS = itemId;
+            } else {
+                fittedItems.BOTTOMS = itemId;
+            }
+        }
+        if(imageUrl !== undefined) {
+            $("#addFittedItem").innerHTML = '<img src="' + imageUrl + '" width="75" height="75" alt="" /><button class="btn-delete" onClick="FASHIONADE.removeItem(\'' + category + '\')">삭제</button>';
+            $("#addFittedItem").style.width = "75px";
         }
 
-        var isChooseMode = $$("#fashionade-virtual-fitting .choosemode").length;
-        if(isChooseMode > 0) {
+        //call composite image
+        fittedModels.map(function(m, i) {
+            get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
+                m.fittedImageUrl = d.imageUrl;
 
-        } else {
-            //call composite image
-            fittedModels.map(function(m, i) {
-                get(tmpConfig.proxy + tmpConfig.APIs.composite + '?apiKey=' + tmpConfig.apiKey + '&modelId=' + m.id + '&topId=' + fittedItems.TOPS + '&bottomId=' + fittedItems.BOTTOMS, function (d) {
-                    m.fittedImageUrl = d.imageUrl;
-
-                    //hard code
-                    //0 1 2 3
-                    //2 0 1 2
-                    //0 1 2 0
-                    //1 2 0 1
-                    if(choosedFiitedModelIndex === 0) {
-                        $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
-                        $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
-                        $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
-                        $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
-                    } else if(choosedFiitedModelIndex === 1) {
-                        $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
-                        $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
-                        $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
-                        $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
-                    } else if(choosedFiitedModelIndex === 2) {
-                        $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
-                        $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
-                        $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
-                        $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
-                    }
-                });
+                //hard code
+                //0 1 2 3
+                //2 0 1 2
+                //0 1 2 0
+                //1 2 0 1
+                if(choosedFiitedModelIndex === 0) {
+                    $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                } else if(choosedFiitedModelIndex === 1) {
+                    $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                } else if(choosedFiitedModelIndex === 2) {
+                    $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[2].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[0].fittedImageUrl + '")';
+                    $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[1].fittedImageUrl + '")';
+                }
             });
-        }
-        
-        $("#addFittedItem").innerHTML = '<img src="' + imageUrl + '" width="75" height="75" alt="" /><button class="btn-delete" onClick="FASHIONADE.removeItem(\'' + category + '\')">삭제</button>';
-        $("#addFittedItem").style.width = "75px";
+        });
     }
 
     function removeFittedItem(category) {
@@ -812,20 +839,47 @@ var FASHIONADE = (function ($w) {
             }
         }
 
-
         $("#addFittedItem").innerHTML = "";
         $("#addFittedItem").style.width = "0";
     }
 
-    function chooseModel() {
-        $("#fashionade-virtual-fitting .change-model").className = "change-model";
-        $("#fashionade-virtual-fitting .btn-prev").style.display = "none";
-        $("#fashionade-virtual-fitting .btn-next").style.display = "none";
-        $("#fashionade-virtual-fitting .fitted-items ul").style.display = "block";
-        $("#fashionade-virtual-fitting .fitted-items .notice").style.display = "none";
-        $("#fashionade-virtual-fitting .header .btn-edit").style.display = "none";
+    function setDefaultModels() {
+        if(choosedFiitedModelIndex === 0) {
+            $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[2].imageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[0].imageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[1].imageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[2].imageUrl + '")';
+        } else if(choosedFiitedModelIndex === 1) {
+            $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[0].imageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[1].imageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[2].imageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[0].imageUrl + '")';
+        } else if(choosedFiitedModelIndex === 2) {
+            $$('#fashionade-virtual-fitting .slide')[0].style.backgroundImage = 'url("' + fittedModels[1].imageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[1].style.backgroundImage = 'url("' + fittedModels[2].imageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[2].style.backgroundImage = 'url("' + fittedModels[0].imageUrl + '")';
+            $$('#fashionade-virtual-fitting .slide')[3].style.backgroundImage = 'url("' + fittedModels[1].imageUrl + '")';
+        }
+    }
 
-        // addFittedItem("BOTTOM", fittedItems.BOTTOMS, "");
+    function chooseModel() {
+        setDefaultModels();
+        document.querySelector("#fashionade-virtual-fitting .change-model").className = "change-model choosemode";
+        document.querySelector("#fashionade-virtual-fitting .btn-prev").style.display = "block";
+        document.querySelector("#fashionade-virtual-fitting .btn-next").style.display = "block";
+        document.querySelector("#fashionade-virtual-fitting .fitted-items .notice").style.display = "block";
+        document.querySelector("#fashionade-virtual-fitting .header .btn-edit").style.display = "block";
+        document.querySelector("#fashionade-virtual-fitting .fitted-items ul").style.display = "none";
+    }
+
+    function changeModel() {
+        addFittedItem("BOTTOM");
+        document.querySelector("#fashionade-virtual-fitting .change-model").className = "change-model";
+        document.querySelector("#fashionade-virtual-fitting .btn-prev").style.display = "none";
+        document.querySelector("#fashionade-virtual-fitting .btn-next").style.display = "none";
+        document.querySelector("#fashionade-virtual-fitting .fitted-items .notice").style.display = "none";
+        document.querySelector("#fashionade-virtual-fitting .header .btn-edit").style.display = "none";
+        document.querySelector("#fashionade-virtual-fitting .fitted-items ul").style.display = "block";
     }
 
     return {
@@ -856,9 +910,6 @@ var FASHIONADE = (function ($w) {
         },
         init: init,
         tmpInit: tmpInit,
-        openFashionadeVirtualFitting : function() {
-            document.querySelector("#fashionade-virtual-fitting").style.visibility = "visible";
-        },
         closeFashionadeVirtualFitting : function() {
             document.querySelector("#fashionade-virtual-fitting").style.visibility = "hidden";
             document.querySelector("#fashionade-virtual-fitting .wrap1").style.display = "";
@@ -879,16 +930,7 @@ var FASHIONADE = (function ($w) {
         nextModel : function() {
             moveNext();
         },
-        changeModel : function() {
-            document.querySelector("#fashionade-virtual-fitting .change-model").className = "change-model choosemode";
-            document.querySelector("#fashionade-virtual-fitting .btn-prev").style.display = "block";
-            document.querySelector("#fashionade-virtual-fitting .btn-next").style.display = "block";
-            document.querySelector("#fashionade-virtual-fitting .fitted-items ul").style.display = "none";
-            document.querySelector("#fashionade-virtual-fitting .fitted-items .notice").style.display = "block";
-            document.querySelector("#fashionade-virtual-fitting .header .btn-edit").style.display = "block";
-
-            removeFittedItem("BOTTOM");
-        },
+        changeModel : changeModel,
         chooseModel : chooseModel,
         showCategories : function() {
             document.querySelector("#fashionade-virtual-fitting .layer-category-list").style.display = "block";
@@ -907,11 +949,13 @@ var FASHIONADE = (function ($w) {
             showItems("BOTTOM");
         },
         addItem : function(el, category, itemId, imageUrl) {
-            document.querySelectorAll(".prepared-items ul li").forEach(el => {
-                el.className = "";
-            });
-            el.className = "selected";
-            addFittedItem(category, itemId, imageUrl);
+            if(document.querySelector("#fashionade-virtual-fitting .change-model").className.indexOf("choosemode") < 0) {
+                document.querySelectorAll(".prepared-items ul li").forEach(el => {
+                    el.className = "";
+                });
+                el.className = "selected";
+                addFittedItem(category, itemId, imageUrl);
+            }
         },
         removeItem : function(category) {
             document.querySelectorAll(".prepared-items ul li").forEach(el => {
