@@ -154,6 +154,7 @@
     border:1px solid #000;
     border-radius:5px;
     font-size:14px;
+    color:#353535;
 }
 #fashionade-virtual-fitting .change-model .size {
     float:left;
@@ -164,33 +165,29 @@
     font-size:12px;
     color:#dadada;
 }
-#fashionade-virtual-fitting .change-model .btn-change-model {
+#fashionade-virtual-fitting .change-model .btn-change-model,
+#fashionade-virtual-fitting .change-model .btn-choose-model {
     float:right;
     display:block;
-    width:120px;
+    width:150px;
     cursor:pointer;
-    margin-top:-10px;
+    margin-top:-9px;
     padding:10px;
     border:0 none;
-    background:transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADaSURBVHgB7ZTNCcMwDIXl1gRyyyWQnyUyQjNRR2hX6gRZoUsECjk0p0AhxJVvvRVJjxSKPxC2QfA+2yCiROLHHElIXdfnPM9fy7I8aG+aprmwQOB6lmXZEYCDpNk5d+OaeVt47weEhCMhbdt2IYSBq+DjvK5rP03TnZSIBdASKgGkhFoAJWESQEiYBawSEAGLBExAKyEaRBJ4YFGWZd/7CMTn7eO05OrHcdznC7ThEAFLuFnAGm4SQISrBVDhKgFkuFgAHR7xkuZt2068wMJVVFV1jS9BicS/8AaCk+3DGkHTzQAAAABJRU5ErkJggg==') no-repeat 122px 8px;
-    background-size:16px 16px;
+    background-size:7px 12px;
+    text-align:right;
+}
+#fashionade-virtual-fitting .change-model .btn-change-model {
+    color:#353535;
+    background:transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAMCAIAAAAh9zBHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABWSURBVChTZY9RDgAxBAWdw/0/XMSxyI4lza6+RKvzRJGIcPfMJGmRC0hVzWzYK8EBLaM6oGUMRV+jOnD1eYyphaJN0UHY+zcQz99kjar23qIosTaOiAcyLMoSBGtHmgAAAABJRU5ErkJggg==') no-repeat 100% 10px;
 }
 #fashionade-virtual-fitting .change-model .btn-choose-model {
     display:none;
-    float:right;
-    width:120px;
-    cursor:pointer;
-    margin-top:-10px;
-    /*padding:10px;*/
-    padding:10px 0 10px 10px;
-    border:0 none;
-    /*background:transparent url(src/right_arrow.png) no-repeat 122px 8px;*/
-    /*background-size:16px 16px;*/
-    background-color:#000;
     color:#fff;
+    background:transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAMCAIAAAAh9zBHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB0SURBVChTXc/RDQARDAZgxw1hDA/msJKYwxYWsIAOYAJbyP2VJif9Hyr9qglPCCHGOMYwVyyo1ppSEjhxe++1VikFdc4p6r1HowasONTgPRuc1hoqBqj2iM6veAYu5pyxJHoTWlZFrPiFIoR/QUS9dwHEmA9j0k72LKqD6QAAAABJRU5ErkJggg==') no-repeat 100% 10px;
 }
 #fashionade-virtual-fitting .change-model.choosemode {
-    background-color:#000;
+    background-color:#353535;
     color:#fff;
 }
 #fashionade-virtual-fitting .change-model.choosemode .btn-change-model {
@@ -477,3 +474,4 @@
     border-radius:5px;
     cursor:pointer;
 }
+
