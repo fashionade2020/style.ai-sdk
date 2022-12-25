@@ -2,24 +2,48 @@
 
 위젯이 들어갈 적절한 위치에 HTML을 추가합니다.
 ```
-<span class="comment linenumber react-syntax-highlighter-line-number">1</span><span class="token tag punctuation"><</span><span class="token tag">body</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">2</span>	... <span class="comment linenumber react-syntax-highlighter-line-number">3</span><span class="">	</span><span class="token tag punctuation"><</span><span class="token tag">div</span><span class="token tag"></span><span class="token tag attr-name">id</span><span class="token tag attr-value punctuation attr-equals">=</span><span class="token tag attr-value punctuation">"</span><span class="token tag attr-value">FASHIONADE_STYLE_OUTFITS</span><span class="token tag attr-value punctuation">"</span><span class="token tag punctuation">></span><span class="token tag punctuation"></</span><span class="token tag">div</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">4</span>	... <span class="comment linenumber react-syntax-highlighter-line-number">5</span><span class=""></span><span class="token tag punctuation"></</span><span class="token tag">body</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">6</span> 
+<body>
+	...
+	<div id="FASHIONADE_STYLE_OUTFITS"></div>
+	...
+</body>
 ```
 
 Web SDK의 실행을 위해 JS파일을 임포트합니다.
 
 단, 위에서 추가한 HTML보다 하단에 위치해야 합니다.
 ```
-<span class="comment linenumber react-syntax-highlighter-line-number">1</span><span class="token tag punctuation"><</span><span class="token tag">body</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">2</span>    ... <span class="comment linenumber react-syntax-highlighter-line-number">3</span><span class="">	</span><span class="token tag punctuation"><</span><span class="token tag">div</span><span class="token tag"></span><span class="token tag attr-name">id</span><span class="token tag attr-value punctuation attr-equals">=</span><span class="token tag attr-value punctuation">"</span><span class="token tag attr-value">FASHIONADE_STYLE_OUTFITS</span><span class="token tag attr-value punctuation">"</span><span class="token tag punctuation">></span><span class="token tag punctuation"></</span><span class="token tag">div</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">4</span>	... <span class="comment linenumber react-syntax-highlighter-line-number">5</span><span class=""></span><span class="token tag punctuation"><</span><span class="token tag">script</span><span class="token tag"></span><span class="token tag attr-name">src</span><span class="token tag attr-value punctuation attr-equals">=</span><span class="token tag attr-value punctuation">"</span><span class="token tag attr-value"><https://fashionade2020.github.io/style.ai-sdk/v2/styleoutfits.min.js></span><span class="token tag attr-value punctuation">"</span><span class="token tag punctuation">></span><span class="token tag punctuation"></</span><span class="token tag">script</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">6</span><span class=""></span><span class="token tag punctuation"></</span><span class="token tag">body</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">7</span>
+<body>
+    ...
+	<div id="FASHIONADE_STYLE_OUTFITS"></div>
+	...
+    <script src="<https://fashionade2020.github.io/style.ai-sdk/v2/styleoutfits.min.js>"></script>
+</body>
 ```
 
 이 후 위젯을 동작하게 하는 JAVASCRIPT 코드를 작성합니다.
 ```
-<span class="comment linenumber react-syntax-highlighter-line-number">1</span><span class="token tag punctuation"><</span><span class="token tag">body</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">2</span>	... <span class="comment linenumber react-syntax-highlighter-line-number">3</span><span class="">	</span><span class="token tag punctuation"><</span><span class="token tag">div</span><span class="token tag"></span><span class="token tag attr-name">id</span><span class="token tag attr-value punctuation attr-equals">=</span><span class="token tag attr-value punctuation">"</span><span class="token tag attr-value">FASHIONADE_STYLE_OUTFITS</span><span class="token tag attr-value punctuation">"</span><span class="token tag punctuation">></span><span class="token tag punctuation"></</span><span class="token tag">div</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">4</span>	... <span class="comment linenumber react-syntax-highlighter-line-number">5</span><span class="">	</span><span class="token tag punctuation"><</span><span class="token tag">script</span><span class="token tag"></span><span class="token tag attr-name">src</span><span class="token tag attr-value punctuation attr-equals">=</span><span class="token tag attr-value punctuation">"</span><span class="token tag attr-value"><https://fashionade2020.github.io/style.ai-sdk/v2/styleoutfits.min.js></span><span class="token tag attr-value punctuation">"</span><span class="token tag punctuation">></span><span class="token tag punctuation"></</span><span class="token tag">script</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">6</span><span class="">	</span><span class="token tag punctuation"><</span><span class="token tag">script</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">7</span>		FASHIONADE_STYLE_OUTFITS.init({ <span class="comment linenumber react-syntax-highlighter-line-number">8</span>		    apiKey: {API KEY}, <span class="comment linenumber react-syntax-highlighter-line-number">9</span>		    style: { <span class="comment linenumber react-syntax-highlighter-line-number">10</span>		        title: '', <span class="comment linenumber react-syntax-highlighter-line-number">11</span>		        buttonWrapSelectors: '', <span class="comment linenumber react-syntax-highlighter-line-number">12</span>		        text: `
-`<span class="comment linenumber react-syntax-highlighter-line-number">`13					#header.fixed {z-index:1001;}
-`<span class="comment linenumber react-syntax-highlighter-line-number">`14					.FASHIONADE_STYLE_OUTFITS_BUTTON {right:0;top:0;z-index:1000;}
-`<span class="comment linenumber react-syntax-highlighter-line-number">`15					#FASHIONADE_STYLE_OUTFITS .carousel-cell .name {font-size:12px;color:#555555;}
-`<span class="comment linenumber react-syntax-highlighter-line-number">`16					#FASHIONADE_STYLE_OUTFITS .carousel-cell .price {font-size:12px;color:#008BCC;font-weight:bold;}
-`<span class="comment linenumber react-syntax-highlighter-line-number">`17				`<span class="comment linenumber react-syntax-highlighter-line-number">18</span>		    } <span class="comment linenumber react-syntax-highlighter-line-number">19</span>		}); <span class="comment linenumber react-syntax-highlighter-line-number">20</span><span class="">	</span><span class="token tag punctuation"></</span><span class="token tag">script</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">21</span><span class=""></span><span class="token tag punctuation"></</span><span class="token tag">body</span><span class="token tag punctuation">></span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">22</span>
+<body>
+	...
+	<div id="FASHIONADE_STYLE_OUTFITS"></div>
+	...
+	<script src="<https://fashionade2020.github.io/style.ai-sdk/v2/styleoutfits.min.js>"></script>
+	<script>
+		FASHIONADE_STYLE_OUTFITS.init({
+		    apiKey: {API KEY},
+		    style: {
+		        title: '',
+		        buttonWrapSelectors: '',
+		        text: `
+					#header.fixed {z-index:1001;}
+					.FASHIONADE_STYLE_OUTFITS_BUTTON {right:0;top:0;z-index:1000;}
+					#FASHIONADE_STYLE_OUTFITS .carousel-cell .name {font-size:12px;color:#555555;}
+					#FASHIONADE_STYLE_OUTFITS .carousel-cell .price {font-size:12px;color:#008BCC;font-weight:bold;}
+				`
+		    }
+		});
+	</script>
+</body>
 ```
 
 | 설정 옵션(*는 필수) | 이름 | 기본값 | 비고 |
@@ -40,5 +64,13 @@ Web SDK의 실행을 위해 JS파일을 임포트합니다.
 이 때 쇼핑몰 상단에서 정의된 스타일을 덮어 쓸 수 있음을 유의해야 한다.
 
 ```
-<span class="comment linenumber react-syntax-highlighter-line-number">1</span><span class="token comment">/* 바로가기 버튼 */</span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">2</span><span class=""></span><span class="token selector class">.FASHIONADE_STYLE_OUTFITS_BUTTON</span><span class=""></span><span class="token punctuation">{</span><span class="token property">right</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">;</span><span class="token property">top</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">;</span><span class="token property">z-index</span><span class="token punctuation">:</span><span class="token number">1000</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">3</span> <span class="comment linenumber react-syntax-highlighter-line-number">4</span><span class=""></span><span class="token comment">/* 상품명 */</span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">5</span><span class=""></span><span class="token selector id">#FASHIONADE_STYLE_OUTFITS</span><span class="token selector"></span><span class="token selector class">.carousel-cell</span><span class="token selector"></span><span class="token selector class">.name</span><span class=""></span><span class="token punctuation">{</span><span class="token property">font-size</span><span class="token punctuation">:</span><span class="token number">12</span><span class="token unit">px</span><span class="token punctuation">;</span><span class="token property">color</span><span class="token punctuation">:</span><span class="token hexcode color">#555555</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">6</span> <span class="comment linenumber react-syntax-highlighter-line-number">7</span><span class=""></span><span class="token comment">/* 가격 */</span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">8</span><span class=""></span><span class="token selector id">#FASHIONADE_STYLE_OUTFITS</span><span class="token selector"></span><span class="token selector class">.carousel-cell</span><span class="token selector"></span><span class="token selector class">.price</span><span class=""></span><span class="token punctuation">{</span><span class="token property">font-size</span><span class="token punctuation">:</span><span class="token number">12</span><span class="token unit">px</span><span class="token punctuation">;</span><span class="token property">color</span><span class="token punctuation">:</span><span class="token hexcode color">#008BCC</span><span class="token punctuation">;</span><span class="token property">font-weight</span><span class="token punctuation">:</span><span class="">bold</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class=""> </span><span class="comment linenumber react-syntax-highlighter-line-number">9</span>
+/* 바로가기 버튼 */
+.FASHIONADE_STYLE_OUTFITS_BUTTON {right:0;top:0;z-index:1000;}
+
+/* 상품명 */
+#FASHIONADE_STYLE_OUTFITS .carousel-cell .name {font-size:12px;color:#555555;}
+
+/* 가격 */
+#FASHIONADE_STYLE_OUTFITS .carousel-cell .price {font-size:12px;color:#008BCC;font-weight:bold;}
+
 ```
